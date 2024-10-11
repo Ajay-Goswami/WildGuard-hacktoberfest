@@ -1,14 +1,17 @@
-name: 'Auto Assign Issue Author'
+name: Issue Assignment
 
 on:
   issues:
-    types: [opened, reopened]
+    types: [opened]
 
 jobs:
-  assign-author:
+  auto-assign:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     steps:
-      - name: 'Assign issue author'
-        uses: actions-ecosystem/action-assign-to-author@v1
+      - name: 'Auto-assign issue creator'
+        uses: pozil/auto-assign-issue@v2
         with:
-          github-token: '${{ secrets.GITHUB_TOKEN }}'
+          repo-token: ${{ secrets.GITHUB_TOKEN }} # Required token for authentication
+          assignees: ${{ github.event.issue.user.login }} # Auto-assign the issue creator
